@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111015">
+  <meta name="description" content="Criador de fichas do Isekai Chronicle RPG. Crie, edite, salve e exporte seus personagens.">
+  <title>Isekai Chronicle RPG — Fichas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">IC</div>
+        <div><strong>ISEKAI CHRONICLE</strong><span>RPG · Fichas de personagem</span></div>
+      </div>
+      <nav class="nav">
+        <button class="nav-item active" data-view="character"><span>◈</span> Minha ficha</button>
+        <button class="nav-item" data-view="library"><span>▤</span> Personagens salvos</button>
+        <button class="nav-item" data-view="guide"><span>✧</span> Guia do sistema</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="status-dot"></div>
+        <div><strong>Modo local</strong><span>Seus dados ficam neste navegador</span></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">FERRAMENTA DE PERSONAGEM</div>
+          <h1 id="page-title">Minha ficha</h1>
+        </div>
+        <div class="top-actions">
+          <button class="btn btn-quiet" id="new-character">＋ Nova ficha</button>
+          <button class="btn btn-outline" id="export-json">Exportar JSON</button>
+          <button class="btn btn-primary" id="save-character">Salvar ficha</button>
+        </div>
+      </header>
+
+      <section class="view active" id="view-character">
+        <div class="hero-card">
+          <div class="hero-copy">
+            <div class="eyebrow">SUA JORNADA COMEÇA AQUI</div>
+            <h2>Construa seu herói.<br><em>Escreva sua lenda.</em></h2>
+            <p>Monte atributos, acompanhe recursos e registre as escolhas que definem seu personagem.</p>
+          </div>
+          <div class="hero-sigil">✦</div>
+          <div class="hero-level"><span>NÍVEL</span><strong id="hero-level">1</strong><small>de 100</small></div>
+        </div>
+
+        <div class="section-heading"><div><span class="section-kicker">01 / IDENTIDADE</span><h2>Quem é seu personagem?</h2></div></div>
+        <div class="panel identity-grid">
+          <label class="field field-wide">Nome do personagem<input id="name" placeholder="Ex.: Aurelia Valtheris" maxlength="80"></label>
+          <label class="field">Raça<select id="race"><option value="Humano">Humano</option><option value="Elfo">Elfo</option><option value="Anão">Anão</option><option value="Fera">Fera</option><option value="Outro">Outra / personalizada</option></select></label>
+          <label class="field">Nível <div class="level-input"><input id="level" type="number" min="1" max="100" value="1"><input id="level-range" type="range" min="1" max="100" value="1"></div></label>
+          <label class="field">Ocupação<input id="occupation" placeholder="Ex.: Santa, Cavaleiro, Explorador"></label>
+          <label class="field">Background<input id="background" placeholder="Origem, passado e motivação"></label>
+          <label class="field field-wide">Conceito / aparência<textarea id="concept" rows="2" placeholder="Descreva brevemente o personagem..."></textarea></label>
+        </div>
+
+        <div class="section-heading"><div><span class="section-kicker">02 / ATRIBUTOS</span><h2>Distribuição de atributos</h2><p>Base 8 em cada atributo. Distribua os 15 pontos iniciais e registre bônus adicionais separadamente.</p></div><div class="points-pill"><span>Pontos livres</span><strong id="points-left">15</strong></div></div>
+        <div class="attribute-grid" id="attribute-grid"></div>
+        <div class="notice"><strong>Regra de criação:</strong> esta ferramenta calcula os modificadores usando a tabela por faixas de 2 pontos: 1–2 = −5, 3–4 = −4, 5–6 = −3, 7–8 = −2, 9–10 = −1, 11–12 = +0 e assim por diante. Bônus raciais e pontos ganhos ao subir de nível podem ser registrados na coluna de bônus.</div>
+
+        <div class="section-heading"><div><span class="section-kicker">03 / RECURSOS</span><h2>Recursos de combate</h2><p>Preencha os valores calculados pelas regras da sua raça. Os campos ficam editáveis para respeitar dados raciais ainda não cadastrados.</p></div></div>
+        <div class="resource-grid">
+          <label class="resource-card pv"><span>PV</span><strong><input id="pv-current" type="number" min="0" value="0" aria-label="PV atual"> <i>/</i> <input id="pv-max" type="number" min="0" value="0" aria-label="PV máximo"></strong><small>Pontos de Vida</small></label>
+          <label class="resource-card pm"><span>PM</span><strong><input id="pm-current" type="number" min="0" value="0" aria-label="PM atual"> <i>/</i> <input id="pm-max" type="number" min="0" value="0" aria-label="PM máximo"></strong><small>Pontos de Mana</small></label>
+          <label class="resource-card pe"><span>PE</span><strong><input id="pe-current" type="number" min="0" value="0" aria-label="PE atual"> <i>/</i> <input id="pe-max" type="number" min="0" value="0" aria-label="PE máximo"></strong><small>Pontos de Energia</small></label>
+          <label class="resource-card posture"><span>POSTURA</span><strong><input id="posture-current" type="number" min="0" value="0" aria-label="Postura atual"> <i>/</i> <input id="posture-max" type="number" min="0" value="0" aria-label="Postura máxima"></strong><small>Estabilidade em combate</small></label>
+        </div>
+        <div class="panel defense-grid">
+          <label class="field">Evasão Passiva (EP)<input id="ep" type="number" value="10"></label>
+          <label class="field">Deslocamento<input id="movement" placeholder="Ex.: 9 m"></label>
+          <label class="field">Iniciativa<input id="initiative" placeholder="Ex.: DES + bônus"></label>
+          <label class="field">Proficiência / bônus diversos<input id="bonuses" placeholder="Bônus temporários, passivos etc."></label>
+        </div>
+
+        <div class="section-heading"><div><span class="section-kicker">04 / IDENTIDADE MÁGICA</span><h2>Naturalidades e títulos</h2><p>Selecione apenas as Naturalidades que seu personagem realmente possui.</p></div></div>
+        <div class="panel">
+          <div class="subheading"><h3>Naturalidades</h3><span class="muted">Seleção múltipla</span></div>
+          <div class="tag-grid" id="naturalities">
+            <label><input type="checkbox" value="Chama">Chama</label><label><input type="checkbox" value="Gélido">Gélido</label>
+            <label><input type="checkbox" value="Trovão">Trovão</label><label><input type="checkbox" value="Terra">Terra</label>
+            <label><input type="checkbox" value="Vento/Ar">Vento/Ar</label><label><input type="checkbox" value="Água">Água</label>
+            <label><input type="checkbox" value="Natureza">Natureza</label><label><input type="checkbox" value="Som">Som</label>
+            <label><input type="checkbox" value="Fumaça">Fumaça</label><label><input type="checkbox" value="Necromancia">Necromancia</label>
+            <label><input type="checkbox" value="Sangue">Sangue</label><label><input type="checkbox" value="Mineral">Mineral</label>
+            <label><input type="checkbox" value="Veneno/Ácido">Veneno/Ácido</label><label><input type="checkbox" value="Luz">Luz</label>
+            <label><input type="checkbox" value="Sombras">Sombras</label><label><input type="checkbox" value="Gravidade">Gravidade</label>
+            <label><input type="checkbox" value="Tempo">Tempo</label><label><input type="checkbox" value="Alma">Alma</label>
+            <label><input type="checkbox" value="Mente">Mente</label><label><input type="checkbox" value="Caos">Caos</label>
+            <label><input type="checkbox" value="Ilusão">Ilusão</label><label><input type="checkbox" value="Lunar">Lunar</label>
+            <label><input type="checkbox" value="Solar">Solar</label><label><input type="checkbox" value="Abissal">Abissal</label>
+            <label><input type="checkbox" value="Celestial">Celestial</label><label><input type="checkbox" value="Infernal">Infernal</label>
+            <label><input type="checkbox" value="Vazio">Vazio</label><label><input type="checkbox" value="XP">XP</label>
+            <label><input type="checkbox" value="Magnetismo">Magnetismo</label><label><input type="checkbox" value="Clima">Clima</label>
+            <label><input type="checkbox" value="Animal">Animal</label><label><input type="checkbox" value="Espaço">Espaço</label>
+            <label><input type="checkbox" value="Sorte/Azar">Sorte/Azar</label>
+          </div>
+          <label class="check-special"><input type="checkbox" id="mana-magic"> <span><strong>Magia de Mana</strong><small>Categoria especial, não é uma Naturalidade.</small></span></label>
+          <div class="subheading title-subheading"><h3>Títulos</h3><span class="muted">Até 3 armazenados · 1 equipado</span></div>
+          <div id="titles-list" class="repeat-list"></div>
+          <button class="btn btn-outline btn-small" id="add-title">＋ Adicionar título</button>
+        </div>
+
+        <div class="section-heading"><div><span class="section-kicker">05 / HABILIDADES</span><h2>Habilidades e perícias</h2><p>Registre habilidades, técnicas e perícias do personagem. Os campos não aplicam regras automáticas ainda.</p></div></div>
+        <div class="two-column">
+          <div class="panel">
+            <div class="subheading"><h3>Habilidades</h3><button class="btn btn-outline btn-small" id="add-ability">＋ Adicionar</button></div>
+            <div id="abilities-list" class="repeat-list"></div>
+          </div>
+          <div class="panel">
+            <div class="subheading"><h3>Perícias</h3><button class="btn btn-outline btn-small" id="add-skill">＋ Adicionar</button></div>
+            <div class="skill-checklist" id="skills-list"></div>
+          </div>
+        </div>
+
+        <div class="section-heading"><div><span class="section-kicker">06 / MAGIAS</span><h2>Grimório</h2><p>Registre suas magias e acompanhe seus parâmetros SMCA sem duplicar custos de dano.</p></div><button class="btn btn-outline" id="add-spell">＋ Nova magia</button></div>
+        <div class="panel table-panel">
+          <div class="table-wrap"><table><thead><tr><th>Nome</th><th>Naturalidade</th><th>Tier</th><th>PAC</th><th>PM</th><th></th></tr></thead><tbody id="spells-table"></tbody></table></div>
+          <div id="spell-empty" class="empty-state">Nenhuma magia cadastrada. Adicione uma magia para montar seu grimório.</div>
+        </div>
+
+        <div class="section-heading"><div><span class="section-kicker">07 / EQUIPAMENTO</span><h2>Arsenal e inventário</h2></div><button class="btn btn-outline" id="add-item">＋ Adicionar item</button></div>
+        <div class="panel table-panel">
+          <div class="table-wrap"><table><thead><tr><th>Item</th><th>Categoria</th><th>Qualidade</th><th>Bônus / observações</th><th></th></tr></thead><tbody id="items-table"></tbody></table></div>
+          <div id="item-empty" class="empty-state">Seu inventário está vazio.</div>
+        </div>
+
+        <div class="section-heading"><div><span class="section-kicker">08 / HISTÓRIA</span><h2>Anotações da aventura</h2></div></div>
+        <div class="panel notes-grid">
+          <label class="field">Personalidade<textarea id="personality" rows="3" placeholder="Traços, ideais, vínculos e defeitos..."></textarea></label>
+          <label class="field">Objetivos<textarea id="goals" rows="3" placeholder="Objetivos pessoais e missão atual..."></textarea></label>
+          <label class="field field-wide">Notas da campanha<textarea id="notes" rows="5" placeholder="Aliados, inimigos, pistas, condições, recompensas e acontecimentos..."></textarea></label>
+        </div>
+
+        <footer class="page-footer"><span>ISEKAI CHRONICLE RPG · FICHA DE PERSONAGEM</span><div><button class="btn btn-quiet" id="print-sheet">Imprimir / PDF</button><button class="btn btn-primary" id="save-bottom">Salvar ficha</button></div></footer>
+      </section>
+
+      <section class="view" id="view-library">
+        <div class="section-heading"><div><span class="section-kicker">ARQUIVO LOCAL</span><h2>Personagens salvos</h2><p>As fichas ficam salvas neste navegador. Exporte um JSON para manter uma cópia externa.</p></div></div>
+        <div id="library-list" class="library-grid"></div>
+        <div id="library-empty" class="empty-state">Você ainda não salvou nenhuma ficha.</div>
+      </section>
+
+      <section class="view" id="view-guide">
+        <div class="section-heading"><div><span class="section-kicker">REFERÊNCIA RÁPIDA</span><h2>Guia da ficha</h2><p>Resumo das regras registradas na ferramenta. Confira o livro oficial do sistema para detalhes não cobertos aqui.</p></div></div>
+        <div class="guide-grid">
+          <article class="panel"><span class="guide-number">01</span><h3>Atributos</h3><p>Os seis atributos começam em 8. Na criação, distribua 15 pontos livres. Registre bônus raciais e os pontos recebidos a cada 5 níveis separadamente.</p><div class="formula">Modificador = ⌊(Atributo − 11) / 2⌋</div></article>
+          <article class="panel"><span class="guide-number">02</span><h3>Testes</h3><p>Use 1d20 + modificador do atributo + bônus aplicáveis. Vantagem adiciona 1d10; desvantagem subtrai 1d10.</p><div class="formula">Resultado = 1d20 + MOD + bônus</div></article>
+          <article class="panel"><span class="guide-number">03</span><h3>Progressão</h3><p>O nível máximo é 100. O personagem recebe 1 ponto de Habilidade por nível e +6 pontos de atributo a cada 5 níveis, conforme as regras registradas.</p></article>
+          <article class="panel"><span class="guide-number">04</span><h3>Magia SMCA</h3><p>PAC combina IPD e modificadores. O custo de mana é calculado pela fórmula aprovada, sem cobrar o dano duas vezes.</p><div class="formula">PAC = IPD + custos dos modificadores<br>PM = max(1, ⌈PAC / 2⌉)</div></article>
+          <article class="panel"><span class="guide-number">05</span><h3>Naturalidades</h3><p>Naturalidades são afinidades mágicas. Magia de Mana é uma categoria especial separada. Selecionar uma Naturalidade não custa PM por si só.</p></article>
+          <article class="panel"><span class="guide-number">06</span><h3>Salvamento</h3><p>O salvamento automático usa o armazenamento deste navegador. Para transferir entre dispositivos, exporte o JSON e guarde o arquivo com segurança.</p></article>
+        </div>
+        <div class="notice warning"><strong>Importante:</strong> esta é uma primeira versão funcional do criador de fichas, não um motor de regras completo. Os recursos raciais, cálculos de PV/PM/PE/Postura por nível, custos de magias e listas de equipamentos precisam ser ligados às tabelas oficiais do sistema antes de automatizar esses valores.</div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="spell-dialog" class="modal">
+    <form method="dialog" id="spell-form">
+      <div class="modal-head"><div><span class="section-kicker">GRIMÓRIO</span><h2 id="spell-dialog-title">Adicionar magia</h2></div><button class="icon-btn" value="cancel" aria-label="Fechar">×</button></div>
+      <input type="hidden" id="spell-id">
+      <div class="modal-grid">
+        <label class="field field-wide">Nome da magia<input id="spell-name" required placeholder="Nome da magia"></label>
+        <label class="field">Naturalidade<select id="spell-nature"><option>Magia de Mana</option><option>Chama</option><option>Gélido</option><option>Trovão</option><option>Terra</option><option>Vento/Ar</option><option>Água</option><option>Natureza</option><option>Luz</option><option>Sombras</option><option>Necromancia</option><option>Outra</option></select></label>
+        <label class="field">Tier<select id="spell-tier"><option>Tier 1</option><option>Tier 2</option><option>Tier 3</option><option>Tier 4</option><option>Tier 5</option><option>Tier 6</option><option>Tier 7</option><option>Tier 8</option><option>Tier 9</option><option>Tier 10</option></select></label>
+        <label class="field">PAC<input id="spell-pac" type="number" min="0" value="1" required></label>
+        <label class="field">PM (calculado)<input id="spell-pm" type="number" readonly value="1"></label>
+        <label class="field field-wide">Efeito / descrição<textarea id="spell-description" rows="3" placeholder="Dano, cura, alcance, área, duração, condições..."></textarea></label>
+      </div>
+      <div class="modal-actions"><button class="btn btn-quiet" value="cancel">Cancelar</button><button class="btn btn-primary" id="submit-spell" value="default">Salvar magia</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="item-dialog" class="modal">
+    <form method="dialog" id="item-form">
+      <div class="modal-head"><div><span class="section-kicker">INVENTÁRIO</span><h2 id="item-dialog-title">Adicionar item</h2></div><button class="icon-btn" value="cancel" aria-label="Fechar">×</button></div>
+      <input type="hidden" id="item-id">
+      <div class="modal-grid">
+        <label class="field field-wide">Nome do item<input id="item-name" required placeholder="Nome do equipamento"></label>
+        <label class="field">Categoria<select id="item-category"><option>Arma</option><option>Armadura</option><option>Escudo</option><option>Acessório</option><option>Consumível</option><option>Material</option><option>Outro</option></select></label>
+        <label class="field">Qualidade<select id="item-quality"><option>Comum</option><option>Quebrado</option><option>Danificado</option><option>Raro</option><option>Épico</option><option>Mítico</option><option>Único</option><option>Lendário</option></select></label>
+        <label class="field field-wide">Bônus / observações<input id="item-bonus" placeholder="Bônus, material, melhoria, quantidade..."></label>
+      </div>
+      <div class="modal-actions"><button class="btn btn-quiet" value="cancel">Cancelar</button><button class="btn btn-primary" id="submit-item" value="default">Salvar item</button></div>
+    </form>
+  </dialog>
+  <input type="file" id="import-file" accept=".json,application/json" hidden>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
